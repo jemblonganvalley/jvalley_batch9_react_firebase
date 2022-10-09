@@ -1,8 +1,11 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import {getAuth, signInWithPopup, GoogleAuthProvider} from "firebase/auth"
+import {getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword} from "firebase/auth"
+import { useNavigate } from "react-router-dom"
 
 export default function Login() {
+
+    const navigate = useNavigate()
 
     const handleGoogleLogin = ()=>{
         const auth = getAuth()
@@ -10,15 +13,33 @@ export default function Login() {
         signInWithPopup(auth, provider)
         .then((result)=>{
             console.info(result.user)
+            localStorage.setItem('user', JSON.stringify(result.user))
+            navigate("/dashboard")
         })
         .catch((err)=>{
             console.info(err)
         })
     }
 
+    const handleEmailPasswordLogin = (e)=>{
+        e.preventDefault()
+        const email = e.target.email.value
+        const password = e.target.password.value
+
+        const auth = getAuth()
+        signInWithEmailAndPassword(auth,email,password)
+        .then((result)=>{
+            localStorage.setItem('user', JSON.stringify(result.user))
+            navigate("/dashboard")
+        })
+        .catch((err)=>{
+            alert("Terjadi kesalahan")
+        })
+    }
+
   return (
     <main className='w-screen min-h-screen flex flex-col bg-gradient-to-tr from-blue-800 to-blue-500 max-w-[500px] mx-auto p-10'>
-        <form className='w-full bg-white flex flex-col gap-4 shadow-lg rounded-lg mt-8 p-6' autoComplete='off'>
+        <form className='w-full bg-white flex flex-col gap-4 shadow-lg rounded-lg mt-8 p-6' autoComplete='off' onSubmit={handleEmailPasswordLogin}>
             <h1 className='text-4xl text-blue-500 text-center'>Login</h1>
             <div className='flex flex-col gap-2'>
                 <label htmlFor="email">Email</label>
