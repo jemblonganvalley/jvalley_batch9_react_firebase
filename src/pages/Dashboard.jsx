@@ -1,6 +1,15 @@
 import React from 'react'
+import {signOut, getAuth} from "firebase/auth"
 
 export default function Dashboard() {
+
+  const handleLogout = ()=>{
+    const auth = getAuth()
+    signOut(auth).then(res =>{
+      window.location.href = "/"
+    })
+  }
+
   return (
     <main className='w-screen min-h-screen flex flex-col bg-gradient-to-tr from-red-800 to-red-500 max-w-[500px] mx-auto p-10'>
 
@@ -9,7 +18,7 @@ export default function Dashboard() {
             <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="" className='w-[80px] h-[80px] rounded-full object-cover' />
             <h3>fadliselaz@gmail.com</h3>
 
-            <button className='h-10 bg-black text-white rounded-lg w-full'>
+            <button className='h-10 bg-black text-white rounded-lg w-full' onClick={handleLogout}>
                 logout
             </button>
         </div>
