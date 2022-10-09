@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import { auth } from "./firebase"
+import "./firebase"
 import { getAuth,onAuthStateChanged } from "firebase/auth"
 import LoadingPage from './pages/LoadingPage'
 
@@ -17,13 +17,13 @@ export default function App() {
     onAuthStateChanged(auth, (user)=>{
       if(user){
         localStorage.setItem('user', JSON.stringify(user))
-        setIsLoading(false)
         setIsLogin(true)
+        setIsLoading(false)
         return
       }
 
-      setIsLoading(false)
       setIsLogin(false)
+      setIsLoading(false)
       localStorage.clear()
     })
   },[])
@@ -34,16 +34,17 @@ export default function App() {
 
   return (
     <>
-      {!isLogin ? (
+      {isLogin ? (
+        <Routes>
+          <Route path='/' element={<Dashboard />} />
+          <Route path='*' element={<Dashboard />} />
+        </Routes>
+     
+      ) : (
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='*' element={<Register />} />
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path='/' element={<Dashboard />} />
-          <Route path='*' element={<Dashboard />} />
         </Routes>
       )}
     </>

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from "react-router-dom"
-import {createUserWithEmailAndPassword, getAuth} from "firebase/auth"
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 
 export default function Register() {
 
@@ -24,7 +24,7 @@ export default function Register() {
     }
 
   return (
-    <main className='w-screen min-h-screen flex flex-col bg-gradient-to-tr from-orange-800 to-orange-500 max-w-[500px] mx-auto p-10'>
+    <main className='w-screen min-h-screen flex flex-col bg-gradient-to-tr from-orange-800 to-orange-500 mx-auto p-10'>
         <form className='w-full bg-white flex flex-col gap-4 shadow-lg rounded-lg mt-8 p-6' autoComplete='off' onSubmit={handleRegister}>
             <h1 className='text-4xl text-orange-500 text-center'>Register</h1>
             <div className='flex flex-col gap-2'>

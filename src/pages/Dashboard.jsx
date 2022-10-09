@@ -5,7 +5,8 @@ export default function Dashboard() {
 
   const [user,setUser] = useState()
   useEffect(()=>{
-    setUser(JSON.parse(localStorage.getItem('user')))
+    const auth = getAuth()
+    setUser(auth.currentUser)
   },[])
 
   const handleLogout = ()=>{
