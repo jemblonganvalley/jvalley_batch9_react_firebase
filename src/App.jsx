@@ -3,8 +3,11 @@ import { Routes, Route } from "react-router-dom"
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import { auth } from "./firebase"
+import { auth, messaging } from "./firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getToken } from "firebase/messaging";
+
+
 
 export default function App() {
 
@@ -12,9 +15,37 @@ export default function App() {
   const [isLogin, setIsLogin] = useState(false)
   const [loading,setLoading] = useState(true)
 
+  //get notification
+  const notifPermission = ()=>{
+    Notification.requestPermission()
+    .then((per)=>{
+      if(per == "granted"){
+        return console.info("Permission diizinkan")
+      }
+      console.info("Tidak di izinkan")
+    })
+  }
+
+  // get token
+  const getFCMToken = ()=>{
+    getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY }).then((currentToken) => {
+      if (currentToken) {
+        console.info(currentToken)
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+        // ...
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+      // ...
+    });
+  }
+
   // clc
   useEffect(()=>{
-
+    notifPermission()
+    getFCMToken()
     const auth = getAuth()
     onAuthStateChanged(auth, (result)=>{
       if(result){
